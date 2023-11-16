@@ -5,18 +5,18 @@
 #include <aclstr.h>
 #include <stdlib.h>
 
-char greeting1[] = "Subir y bajar con las flechas, elegir con el boton verde";
+char greeting1[] = "Elegir con las flechas, luego el btn verde";
 
 char greeting2[] = " POS Cyberciruja 2023";
-char greeting3[] = "\x14\x15 \x16\x17    by gzalo.com";
+char greeting3[] = " \x14\x15  \x16\x17  by gzalo.com";
 
-char artNames[41][25] = {
+char artNames[41][21] = {
     "00. Al azar",
     "01. Cybercirujas",
     "02. Flashparty",
     "03. Linux",
     "04. Raspberry Pi",
-    "05. Exceso de Windows",
+    "05. Exceso Windows",
     "06. Boleto de bondi",
     "07. Cara Soldan",
     "08. Replay",
@@ -51,7 +51,7 @@ char artNames[41][25] = {
     "37. Tetris",
     "38. Half-Life",
     "39. Portal gun",
-    "40. Conectar Igualdad"
+    "40. ConectarIgualdad"
 };
 
 char filenames[40][16] = {
@@ -142,20 +142,25 @@ int main (void){
     const int WIN_HEIGHT = 4;
     const int TOTAL_ELEMENTS = 41;
     const int TOTAL_LOGOS = 40;
+    int redraw = 1;
 
     while(1) {
         set_backlight(1);
 
-        write_at(greeting1, strlen(greeting1), 1, 1);  
-        write_at(greeting2, strlen(greeting2), 1, 7);  
-        write_at(greeting3, strlen(greeting3), 1, 8); 
+        if(redraw){
+            redraw = 0;
+            clrscr();
+            write_at(greeting1, strlen(greeting1), 1, 1);  
+            write_at(greeting2, strlen(greeting2), 1, 7);  
+            write_at(greeting3, strlen(greeting3), 1, 8); 
 
-        // Cursor
-        write_at(">", 1, 1, 3+cursorPos); 
-        for(int i=0;i<WIN_HEIGHT;i++){
-            write_at(artNames[i+winOffset], strlen(artNames[i+winOffset]), 2, 3+i); 
+            // Cursor
+            write_at(">", 1, 1, 3+cursorPos); 
+            for(int i=0;i<WIN_HEIGHT;i++){
+                write_at(artNames[i+winOffset], strlen(artNames[i+winOffset]), 2, 3+i); 
+            }
         }
-
+        
         int pendingKeys = kbd_pending_count();
         int down = 0;
         int up = 0;
@@ -177,6 +182,7 @@ int main (void){
             } else {
                 cursorPos++;
             }
+            redraw = 1;
         } 
 
         if(up){
@@ -187,6 +193,7 @@ int main (void){
             } else {
                 cursorPos--;
             }
+            redraw = 1;
         }
 
         if(print){
@@ -197,8 +204,9 @@ int main (void){
                 artIndex--;
             }
 
+            clrscr();
             write_at("TE TOCA:", 8, 1, 1);
-            write_at(artNames[artIndex], strlen(artNames[artIndex]), 1, 2);
+            write_at(artNames[artIndex+1], strlen(artNames[artIndex+1]), 1, 2);
             error_tone();
             print_bitmapimage(hPrinter, 0, filenames[artIndex]);
             print_bitmapimage(hPrinter, 0, padding);
@@ -210,6 +218,7 @@ int main (void){
             SVC_WAIT(5000);
 
             normal_tone();
+            redraw = 1;
         }
         SVC_WAIT(1);
     }
