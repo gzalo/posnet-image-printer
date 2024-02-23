@@ -139,7 +139,7 @@ int main (void){
 
     int cursorPos = 0;
     int winOffset = 0;
-    const int WIN_HEIGHT = 4;
+    const int WIN_HEIGHT = 8;
     const int TOTAL_ELEMENTS = 41;
     const int TOTAL_LOGOS = 40;
     int redraw = 1;
@@ -150,14 +150,14 @@ int main (void){
         if(redraw){
             redraw = 0;
             clrscr();
-            write_at(greeting1, strlen(greeting1), 1, 1);  
+            /*write_at(greeting1, strlen(greeting1), 1, 1);  
             write_at(greeting2, strlen(greeting2), 1, 7);  
-            write_at(greeting3, strlen(greeting3), 1, 8); 
+            write_at(greeting3, strlen(greeting3), 1, 8); */
 
             // Cursor
-            write_at(">", 1, 1, 3+cursorPos); 
+            write_at("\x18", 1, 1, cursorPos+1); 
             for(int i=0;i<WIN_HEIGHT;i++){
-                write_at(artNames[i+winOffset], strlen(artNames[i+winOffset]), 2, 3+i); 
+                write_at(artNames[i+winOffset], strlen(artNames[i+winOffset]), 2, i+1); 
             }
         }
         
