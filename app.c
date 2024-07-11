@@ -97,6 +97,9 @@ char filenames[40][16] = {
     "I:1/39.bmp",    
 };
 
+char advertisement1[] = "   Cybercirujas 2024\n";
+char advertisement2[] = " Tenes hardware para donar? Encontranos en\nhttps://cybercirujas.rebelion.digital";
+
 // 000 EMPTY 0-15
 // 016 BAT-BAT PALO-PALO FLECHA-ARR FLECHA-ABAJO DERGRUESA IZQGRUESA ArrDer Arr Abaj Enter Der Izq
 // 032 Space !(33) " # ...
@@ -136,6 +139,7 @@ int main (void){
     int hPrinter = open(DEV_COM4, 0);
     clrscr();
     set_cursor(0);
+    p3700_init(hPrinter, 6);
 
     int cursorPos = 0;
     int winOffset = 0;
@@ -209,7 +213,17 @@ int main (void){
             write_at(artNames[artIndex+1], strlen(artNames[artIndex+1]), 1, 2);
             error_tone();
             print_bitmapimage(hPrinter, 0, filenames[artIndex]);
+
+            advertisement1[0] = PRINT_NORM;
+            advertisement1[1] = DBL_HEIGHT;
+            advertisement1[2] = DBL_WIDTH;
+            p3700_print(hPrinter, (unsigned char*) advertisement1);
+
+            advertisement2[0] = PRINT_NORM;
+            p3700_print(hPrinter, (unsigned char*) advertisement2);
+
             print_bitmapimage(hPrinter, 0, padding);
+
             SVC_WAIT(100);
 
             clrscr();
